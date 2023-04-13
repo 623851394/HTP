@@ -17,7 +17,7 @@ def set_seed(seed):
     torch.manual_seed(seed)
 
 
-def main(seed, k):
+if __name__ == '__main__':
     set_seed(seed)
     def str2bool(s):
         if s not in {'false', 'true'}:
@@ -25,16 +25,16 @@ def main(seed, k):
         return s == 'true'
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', default='Cloth', help='Sports | Beauty | Cloth | Tafeng | amazon_all')
+    parser.add_argument('--dataset', default='Cloth', help='Sports | Cloth | Tafeng')
     parser.add_argument('--train_dir', default='default')
     parser.add_argument('--batch_size', default=1024, type=int)
     parser.add_argument('--lr', default=0.0001, type=float)
     parser.add_argument('--maxlen', default=15, type=int)
     parser.add_argument('--hidden_units', default=50, type=int)
     parser.add_argument('--num_blocks', default=2, type=int)
-    parser.add_argument('--num_epochs', default=501, type=int)
+    parser.add_argument('--num_epochs', default=801, type=int)
     parser.add_argument('--num_heads', default=10, type=int)
-    parser.add_argument('--K', default=k, type=int)
+    parser.add_argument('--K', default=3, type=int)
     parser.add_argument('--abs_num_heads', default=10, type=int)
     parser.add_argument('--ritm_num_heads', default=10, type=int)
     parser.add_argument('--dropout_rate', default=0.5, type=float)
@@ -189,20 +189,3 @@ def main(seed, k):
     sampler.close()
     print("Done")
     return max_ndcg, max_hr, max_mrr,max_auc
-
-
-max_ndcgs, max_hrs, max_mrrs = np.array([0.0, 0.0, 0.0, 0.0, 0.0]), np.array([0.0, 0.0, 0.0, 0.0, 0.0]), np.array([0.0, 0.0, 0.0,0.0, 0.0])
-max_aucs = np.array([0.0, 0.0, 0.0, 0.0, 0.0])
-if __name__ == '__main__':
-#     print(main(2021))
-    head = [2,]
-    times = 3
-    for idx, i in enumerate(head):
-        for t in range(times):
-            print("head is", i, "times is ", t, "sees is ", 2021-t)
-            max_ndcg, max_hr, max_mrr, max_auc = main(2021-t, i)
-            max_ndcgs[idx] += max_ndcg
-            max_hrs[idx] += max_hr
-            max_mrrs[idx] += max_mrr
-            max_aucs[idx] += max_auc
-    print("avg NDCG is {}, avg HR is {} avg MRR is {}, agv AUC is {}".format(max_ndcgs / times, max_hrs / times , max_mrrs / times, max_aucs / times))
